@@ -25,18 +25,25 @@ class Server  {
         this.adversary_url = "http://localhost:"+new_port;
     }
 
-    public void create() throws IOException, InterruptedException {
-        final HttpServer server = HttpServer.create(new InetSocketAddress(this.port), 0);
+    public void create() {
+        final HttpServer server;
+        try {
+            server = HttpServer.create(new InetSocketAddress(this.port), 0);
+            server.createContext("/ping", new CallHandler());
+            server.createContext("/api/game/start", new GameStartHandler());
+            server.createContext("/api/game/fire", new FireHandler());
 
-        server.createContext("/ping", new CallHandler());
-        server.createContext("/api/game/start", new GameStartHandler());
-        server.createContext("/api/game/fire", new FireHandler());
-
-        server.setExecutor(Executors.newFixedThreadPool(1));
-        server.start();
-        if (!url.equals("")){
-            post();
+            server.setExecutor(Executors.newFixedThreadPool(1));
+            server.start();
+            if (!url.equals("")){
+                post();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
 
     }
 

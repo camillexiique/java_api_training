@@ -22,18 +22,20 @@ public class FireHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         if (exchange.getRequestMethod().equals("GET")){
         String cell = get_cell(exchange);
-
         if (is_hit(cell)){
             consquence = "hit";
             if (is_sunk(cell)){
                 consquence = "sunk";
                 this.nb_ship -= 1;
                 this.shipleft = shipLeft();
-            }
-        }
+            }}
 
         }
-    }
+        try {
+            post();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }}
 
 
     private boolean is_hit(String cell){
