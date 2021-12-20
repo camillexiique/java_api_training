@@ -14,7 +14,7 @@ class CallHandler implements HttpHandler {
 
         String body = "Hello";
         exchange.sendResponseHeaders(200, body.length());
-        try (OutputStream os = exchange.getResponseBody()) { // (1)
+        try (OutputStream os = exchange.getResponseBody()) {
             os.write(body.getBytes());
         }
     }
