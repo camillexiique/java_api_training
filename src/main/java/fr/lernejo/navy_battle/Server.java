@@ -30,7 +30,7 @@ class Server  {
 
         server.createContext("/ping", new CallHandler());
         server.createContext("/api/game/start", new GameStartHandler());
-        
+        server.createContext("/api/game/fire", new FireHandler());
 
         server.setExecutor(Executors.newFixedThreadPool(1));
         server.start();
