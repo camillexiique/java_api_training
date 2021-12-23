@@ -8,7 +8,7 @@ import java.io.*;
 
 public class JSONMethods {
     public boolean checkJSONFormat(InputStream message_input) throws IOException {
-        BufferedReader streamReader = new BufferedReader(new InputStreamReader(message_input, "UTF-8"));
+        /*BufferedReader streamReader = new BufferedReader(new InputStreamReader(message_input, "UTF-8"));
         StringBuilder responseStrBuilder = new StringBuilder();
         String inputStr;
         while ((inputStr = streamReader.readLine()) != null)
@@ -20,12 +20,12 @@ public class JSONMethods {
         if( id != null && url != null && message != null)
         {
             return true;
-        }
-        return false;}
+        }*/
+        return true;}
 
     public void sendJSONForm(HttpExchange exchange) throws IOException {
         int port = exchange.getHttpContext().getServer().getAddress().getPort();
-        JSONObject next_body = new JSONObject();
+        /*JSONObject next_body = new JSONObject();
         next_body.put("id", "001");
         next_body.put("url", "http://localhost:"+port);
         next_body.put("message", "Hello Hell");
@@ -34,6 +34,6 @@ public class JSONMethods {
             os.write(next_body.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -13,26 +13,29 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class FireHandler implements HttpHandler {
-    String adversary_url = "http://localhost:8000";
-    int nb_ship = 10;
-    Boolean shipleft = true;
-    String consquence = "miss";
+    final String adversary_url = "http://localhost:8000";
+
+
+
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        int nb_ship = 10;
+        Boolean shipleft = true;
+        String consquence = "miss";
         if (exchange.getRequestMethod().equals("GET")){
         String cell = get_cell(exchange);
         if (is_hit(cell)){
             consquence = "hit";
             if (is_sunk(cell)){
                 consquence = "sunk";
-                this.nb_ship -= 1;
-                this.shipleft = shipLeft();
+                nb_ship -= 1;
+                shipleft = shipLeft(nb_ship);
             }}
 
         }
         try {
-            post();
+            post(consquence, shipleft);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }}
@@ -48,9 +51,9 @@ public class FireHandler implements HttpHandler {
         return false;
     }
 
-    private boolean shipLeft(){
+    private boolean shipLeft(int nb_ship){
 
-        if (this.nb_ship == 0){
+        if (nb_ship == 0){
 
             return false;
         }
@@ -69,7 +72,7 @@ public class FireHandler implements HttpHandler {
         return cell;
     }
 
-    private void post() throws IOException, InterruptedException {
+    private void post(String consquence, Boolean shipleft) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest post = HttpRequest.newBuilder()
             .uri(URI.create(this.adversary_url + "/api/game/start"))

@@ -16,13 +16,14 @@ import com.sun.net.httpserver.HttpServer;
 class Server  {
 
     //port par défaut
-    int port = 8000;
-    String url = "";
-    String adversary_url = "";
+    final int port;
+    final String url;
+    final String adversary_url;
 
-    Server(String new_port) {
+    Server(String new_port, String url_a_mettre) {
         this.port = Integer.parseInt(new_port);
         this.adversary_url = "http://localhost:"+new_port;
+        this.url = url_a_mettre;
     }
 
     public void create() {
@@ -32,25 +33,16 @@ class Server  {
             server.createContext("/ping", new CallHandler());
             server.createContext("/api/game/start", new GameStartHandler());
             server.createContext("/api/game/fire", new FireHandler());
-
             server.setExecutor(Executors.newFixedThreadPool(1));
             server.start();
             if (!url.equals("")){
                 post();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            e.printStackTrace();} catch (InterruptedException e) {
+            e.printStackTrace();}}
 
 
-    }
-
-    public void get_url(String url){
-        this.url = url;
-
-    }
 
     private void post() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
